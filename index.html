@@ -63,6 +63,11 @@ form{
             <input type="text" name="user" id="user" required>
             <label for="area">Area</label>
             <input type="text" name="area" id="area" required>
+            <label for="status">Status</label>
+            <select name="status" id="status">
+                <option value="Complete">Complete</option>
+                <option value="WIP">WIP</option>
+            </select>
             <button type="submit" id="hiddenBtn"></button>
         </form>
     </div>
@@ -96,9 +101,10 @@ form{
             const sop = document.getElementById('sop').value;
             const user = document.getElementById('user').value;
             const area = document.getElementById('area').value;
+            const status = document.getElementById('status').value;
             
             // Combine all information for the QR code
-            const qrData = `SOP: ${sop}\nUser: ${user}\nArea: ${area}\n\nGenerated at: ${new Date().toLocaleString()}`;
+            const qrData = `SOP: ${sop}\nUser: ${user}\nArea: ${area}\nStatus: ${status}\nGenerated at: ${new Date().toLocaleString()}`;
             
             // Get the canvas element
             const canvas = document.getElementById('qrCanvas');
