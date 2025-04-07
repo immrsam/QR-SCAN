@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic QR Code with Time</title>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .info-container {
+            background-color: #f0f0f0;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        #qrcode {
+            margin: 20px 0;
+            padding: 10px;
+            border: 1px solid #ddd;
+            display: inline-block;
+        }
+        .update-btn {
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        #qrCanvas {
+            width: 200px;
+            height: 200px;
+        }
+form{
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    min-width: 300px;
+    max-width: 500px;
+}
+#hiddenBtn{
+    display: none;
+}
+
+    </style>
+</head>
+<body>
+    <h1>Information Display</h1>
+    
+    <div class="info-container">
+        <h2>Current Information</h2>
+        <p id="currentTime">Loading time...</p>
+        <p id="customInfo">START</p>
+        <form id="formContent">
+            <label for="sop">SOP</label>
+            <input type="number" name="sop" id="sop" required>
+            <label for="user">User</label>
+            <input type="text" name="user" id="user" required>
+            <label for="area">Area</label>
+            <input type="text" name="area" id="area" required>
+            <button type="submit" id="hiddenBtn"></button>
+        </form>
+    </div>
+    
+    <h2>Scan this QR Code to get the current info</h2>
+    <div id="qrcode">
+        <canvas id="qrCanvas"></canvas>
+    </div>
+    <button class="update-btn" onclick="updateQRCode()">Update QR Code</button>
+    
+    <script>
+        document.getElementById('formContent').addEventListener('submit', function (event) {
+            event.preventDefault();
+            console.log('Someone said hi!');
+        });
+
+        // Function to update time display and QR code
+        function updateAll() {
+            // Update the time display
+            const now = new Date();
+            document.getElementById('currentTime').textContent = `Current Time: ${now.toLocaleString()}`;
+            
+            // Update the QR code
+            updateQRCode();
+        }
+        
+        // Function to generate QR code with current info
+        function updateQRCode() {
+            const timeInfo = document.getElementById('currentTime').textContent;
+            const customInfo = document.getElementById('customInfo').textContent;
+            const sop = document.getElementById('sop').value;
+            const user = document.getElementById('user').value;
+            const area = document.getElementById('area').value;
+            
+            // Combine all information for the QR code
+            const qrData = `SOP: ${sop}\nUser: ${user}\nArea: ${area}\n\nGenerated at: ${new Date().toLocaleString()}`;
+            
+            // Get the canvas element
+            const canvas = document.getElementById('qrCanvas');
+            
+            // Generate new QR code
+            QRCode.toCanvas(canvas, qrData, { width: 200 }, function (error) {
+                if (error) console.error(error);
+            });
+        }
+        
+        // Initial update
+        updateAll();
+        
+        // Update every second to keep time current
+        setInterval(updateAll, 1000);
+    </script>
+</body>
+</html>
